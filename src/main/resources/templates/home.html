@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>IOT-Tolls</title>
+    <link rel="shortcut icon" href="#" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script th:src="@{/layui/layui.js}"></script>
+</head>
+<style>
+    #mainIframe{
+        height: 880px;
+        width: 99%;
+        border-top: 2px solid #ddf6ed;
+        text-align: center;
+    }
+    #configIframe{
+        height: 880px;
+        width: 99%;
+        border-top: 2px solid #ddf6ed;
+        text-align: center;
+    }
+    .layui-breadcrumb{
+        margin: 0 auto;
+        font-size: 35px;
+        height: 35px;
+        line-height: 35px;
+        margin-left: 2%;
+    }
+</style>
+<body>
+
+<span class="layui-breadcrumb" lay-separator="-">
+  <a href="">首页</a>
+  <a href="javascript:void(0);" id="demoPage">字段配置</a>
+  <a href="">页面二</a>
+</span>
+
+<div id="config">
+    <iframe id="configIframe" src="./inputConfig"></iframe>
+</div>
+
+<div id="main" hidden="hidden">
+    <iframe id="mainIframe" src="./index"></iframe>
+</div>
+
+<script>
+
+layui.use('jquery', function(){
+
+    var layer = layui.layer, //弹层
+            $ = layui.jquery
+
+    $("#demoPage").click(function (){
+
+        console.log("ccc");
+        $("#config").hide();
+        $("#main").show();
+
+    });
+
+})
+
+
+
+</script>
+
+</body>
+</html>

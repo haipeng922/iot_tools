@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fencer.mapper.CommonMapper">
+
+    <resultMap id="BaseResult" type="com.fencer.entity.TableJsonRelationship">
+        <result column="id" property="id" />
+        <result column="subdev_code" property="subdevCode" />
+        <result column="subdev_code_name" property="subdevCodeName" />
+        <result column="table_name" property="tableName" />
+        <result column="field_name" property="fieldName" />
+        <result column="json_name" property="jsonName" />
+        <result column="field_type" property="fieldType" />
+        <result column="push_time_name" property="pushTimeName" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <sql id="BaseColumn">
+        id,subdev_code,subdev_code_name,table_name,field_name,json_name,field_type,
+        push_time_name,remark
+    </sql>
+
+    <select id="list" resultMap="BaseResult">
+        select
+            <include refid="BaseColumn" />
+        from
+            table_json_relationship
+        <where>
+            <if test="subdevCode != null and subdevCode != ''">
+                subdev_code = #{subdevCode}
+            </if>
+        </where>
+        order by subdev_code
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select
+            count(id)
+        from
+        table_json_relationship
+        <where>
+            <if test="subdevCode != null and subdevCode != ''">
+                subdev_code = #{subdevCode}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" parameterType="com.fencer.entity.TableJsonRelationship">
+        INSERT INTO
+        table_json_relationship
+            (
+             id,
+             subdev_code,
+             subdev_code_name,
+             table_name,
+             field_name,
+             field_type,
+             json_name,
+             push_time_name,
+             remark
+            )
+        VALUES
+            (
+             #{id},
+             #{subdevCode},
+             #{subdevCodeName},
+             #{tableName},
+             #{fieldName},
+             #{fieldType},
+             #{jsonName},
+             #{pushTimeName},
+             #{remark}
+            )
+    </insert>
+
+    <select id="info" resultMap="BaseResult">
+        select
+            <include refid="BaseColumn" />
+        from
+            table_json_relationship
+        where
+            id = #{id}
+    </select>
+
+    <update id="update" parameterType="com.fencer.entity.TableJsonRelationship">
+        update
+            table_json_relationship
+        <set>
+            <if test="subdevCode != null and subdevCode != ''">
+                subdev_code = #{subdevCode},
+            </if>
+            <if test="subdevCodeName != null and subdevCodeName != ''">
+                subdev_code_name = #{subdevCodeName},
+            </if>
+            <if test="tableName != null and tableName != ''">
+                table_name = #{tableName},
+            </if>
+            <if test="fieldName != null and fieldName != ''">
+                field_name = #{fieldName},
+            </if>
+            <if test="fieldType != null and fieldType != ''">
+                field_type = #{fieldType},
+            </if>
+            <if test="jsonName != null and jsonName != ''">
+                json_name = #{jsonName},
+            </if>
+            <if test="pushTimeName != null and pushTimeName != ''">
+                push_time_name = #{pushTimeName},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+        </set>
+         where id = #{id}
+    </update>
+
+    <delete id="del" parameterType="java.lang.String">
+        delete from table_json_relationship where id in (${ids})
+    </delete>
+
+    <resultMap id="TableInputConfig" type="com.fencer.entity.TableInputConfig">
+        <result column="id" property="id" />
+        <result column="subdev_code" property="subdevCode" />
+        <result column="subdev_code_field" property="subdevCodeField" />
+        <result column="subdev_name" property="subdevName" />
+        <result column="subdev_name_field" property="subdevNameField" />
+        <result column="pust_time_field" property="pustTimeField" />
+        <result column="table_name" property="tableName" />
+        <result column="input_type" property="inputType" />
+        <result column="manufactor" property="manufactor" />
+        <result column="belong_project" property="belongProject" />
+        <result column="admin_name" property="adminName" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <select id="getList" parameterType="com.fencer.entity.TableInputConfigParam" resultMap="TableInputConfig">
+        select * from table_input_config
+        <where>
+            <if test="subdevCode != null and subdevCode != ''">
+                subdev_code = #{subdevCode}
+            </if>
+            <if test="manufactor != null and manufactor != ''">
+                and manufactor like concat('%',#{manufactor},'%')
+            </if>
+            <if test="belongProject != null and belongProject != ''">
+                and belong_project like concat('%',#{belongProject},'%')
+            </if>
+            <if test="adminName != null and adminName != ''">
+                and admin_name like concat('%',#{adminName},'%')
+            </if>
+        </where>
+        order by subdev_code, update_time DESC
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(id) from table_input_config
+    </select>
+
+    <insert id="addRow" parameterType="com.fencer.entity.TableInputConfig">
+        insert into table_input_config
+            (
+             id,
+             subdev_code,
+             subdev_code_field,
+             subdev_name,
+             subdev_name_field,
+             pust_time_field,
+             table_name,
+             input_type,
+             manufactor,
+             belong_project,
+             admin_name,
+             remark
+            )
+        values
+            (
+             #{id},
+             #{subdevCode},
+             #{subdevCodeField},
+             #{subdevName},
+             #{subdevNameField},
+             #{pustTimeField},
+             #{tableName},
+             #{inputType},
+             #{manufactor},
+             #{belongProject},
+             #{adminName},
+             #{remark}
+             )
+    </insert>
+
+    <select id="getInfo" resultMap="TableInputConfig">
+        select * from table_input_config where id = #{id}
+    </select>
+
+    <select id="getInfoBySubdevCode" resultMap="TableInputConfig">
+        select * from table_input_config where subdev_code = #{subdevCode}
+    </select>
+
+    <update id="updateRow" parameterType="com.fencer.entity.TableInputConfig">
+        update table_input_config
+        <set>
+            <if test="subdevCode != null and subdevCode != ''">
+                subdev_code = #{subdevCode},
+            </if>
+            <if test="subdevCodeField != null and subdevCodeField != ''">
+                subdev_code_field = #{subdevCodeField},
+            </if>
+            <if test="subdevName != null and subdevName != ''">
+                subdev_name = #{subdevName},
+            </if>
+            <if test="subdevNameField != null and subdevNameField != ''">
+                subdev_name_field = #{subdevNameField},
+            </if>
+            <if test="pustTimeField != null and pustTimeField != ''">
+                pust_time_field = #{pustTimeField},
+            </if>
+            <if test="tableName != null and tableName != ''">
+                table_name = #{tableName},
+            </if>
+            <if test="inputType != null and inputType != ''">
+                input_type = #{inputType},
+            </if>
+            <if test="manufactor != null and manufactor != ''">
+                manufactor = #{manufactor},
+            </if>
+            <if test="belongProject != null and belongProject != ''">
+                belong_project = #{belongProject},
+            </if>
+            <if test="adminName != null and adminName != ''">
+                admin_name = #{adminName},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRow" parameterType="java.lang.String">
+        delete from table_input_config where id in (${ids})
+    </delete>
+
+</mapper>
